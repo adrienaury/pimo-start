@@ -1,0 +1,48 @@
+{
+    "name": "PIMO START",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "vscode",
+    "remoteUser": "vscode",
+    "runServices": [
+        "vscode"
+    ],
+    "shutdownAction": "stopCompose",
+    "postCreateCommand": "sudo chown -R vscode:vscode /workspace/. ; make init",
+    "workspaceFolder": "/workspace",
+    "remoteEnv": {
+        "PATH": "${containerEnv:PATH}:/workspace/bin/"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "eamodio.gitlens",
+                "donjayamanne.githistory",
+                "DavidAnson.vscode-markdownlint",
+                "esbenp.prettier-vscode",
+                "yzhang.markdown-all-in-one",
+                "ms-azuretools.vscode-docker",
+                "shardulm94.trailing-spaces",
+                "vscode-icons-team.vscode-icons",
+                "johnpapa.vscode-peacock",
+                "aaron-bond.better-comments",
+                "quicktype.quicktype",
+                "spikespaz.vscode-smoothtype",
+                "EditorConfig.EditorConfig",
+                "redhat.vscode-yaml",
+                "bradlc.vscode-tailwindcss",
+                "elmTooling.elm-ls-vscode"
+            ],
+            "settings": {
+                // General settings
+                "files.eol": "\n",
+                // Docker
+                "remote.extensionKind": {
+                    "ms-azuretools.vscode-docker": "workspace"
+                },
+                "editor.formatOnSave": true
+            }
+        }
+    }
+}
