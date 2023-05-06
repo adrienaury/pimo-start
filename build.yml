@@ -191,7 +191,6 @@ targets:
     depends: "info"
     steps:
       - $: cd web/start && yarn install && yarn tailwind-elm && yarn build
-      - $: rm -rf internal/app/pimo/client/*
 
   lint:
     doc: "Examine source code and report suspicious constructs"
