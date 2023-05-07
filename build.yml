@@ -190,7 +190,7 @@ targets:
     doc: "Build website to dist directory"
     depends: "info"
     steps:
-      - $: cd web/start && yarn install && yarn tailwind-elm && yarn build
+      - $: cd web/start && yarn install && yarn build
 
   lint:
     doc: "Examine source code and report suspicious constructs"
@@ -206,9 +206,9 @@ targets:
 
   release:
     doc: "Compile binary files for production"
-    depends: ["info", "refresh", "lint", "test", "build-web"]
+    depends: ["info", "refresh", "lint", "test"]
     steps:
-      - $: "echo nothing"
+      - $: cd web/start && yarn install && yarn tailwind-elm && yarn build
 
   # to pass a single test use :
   # neon -props '{testsuites: "<test suite filename>"}' test-int

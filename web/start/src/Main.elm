@@ -1,10 +1,11 @@
-module Main exposing (init, main, update, view)
+port module Main exposing (init, main, update, view)
 
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Array exposing (Array)
+import Json.Encode as Encode
 
 
 
@@ -23,6 +24,58 @@ subscriptions _ =
   Sub.none
 
 
+
+-- PORTS
+
+port sendMessage : Encode.Value -> Cmd msg
+
+encodeFieldsDefinitions : Array FieldDefinition -> Encode.Value
+encodeFieldsDefinitions fields =
+  Encode.array encodeFieldDefinition fields
+
+encodeFieldDefinition : FieldDefinition -> Encode.Value
+encodeFieldDefinition field =
+  case field.generator of
+  Default regex ->
+    Encode.object [
+      ( "name", Encode.string field.name )
+    , ( "type", Encode.string "regex" )
+    , ( "regex", Encode.string regex )
+    ]
+  Integer min max ->
+    Encode.object [
+      ( "name", Encode.string field.name )
+    , ( "type", Encode.string "randomInt" )
+    , ( "min", Encode.int min )
+    , ( "max", Encode.int max )
+    ]
+  Decimal min max precision ->
+    Encode.object [
+      ( "name", Encode.string field.name )
+    , ( "type", Encode.string "randomDecimal" )
+    , ( "min", Encode.float min )
+    , ( "max", Encode.float max )
+    , ( "precision", Encode.int precision )
+    ]
+  Date min max ->
+    Encode.object [
+      ( "name", Encode.string field.name )
+    , ( "type", Encode.string "randomInt" )
+    , ( "min", Encode.string min )
+    , ( "max", Encode.string max )
+    ]
+  Ref uri ->
+    Encode.object [
+      ( "name", Encode.string field.name )
+    , ( "type", Encode.string "randomChoiceInUri" )
+    , ( "uri", Encode.string uri )
+    ]
+  Custom template ->
+    Encode.object [
+      ( "name", Encode.string field.name )
+    , ( "type", Encode.string "template" )
+    , ( "template", Encode.string template )
+    ]
 
 -- MODEL
 
@@ -78,6 +131,7 @@ type Msg
   | ChangeGeneratorDateMax Int String
   | ChangeGeneratorRefUri Int String
   | ChangeGeneratorCustomTemplate Int String
+  | Save
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -266,6 +320,8 @@ update msg model =
           Array.indexedMap updateGenerator model
       in
         ( items, Cmd.none )
+    Save ->
+      ( model, sendMessage (encodeFieldsDefinitions model) )
 
 
 
@@ -284,6 +340,7 @@ view model =
             , button [ onClick AddDate ] [ text "+ Date" ]
             , button [ onClick AddRef ] [ text "+ Ref" ]
             , button [ onClick AddCustom ] [ text "+ Template" ]
+            , button [ onClick Save ] [ text "Save" ]
         ]
     ]
   }
