@@ -60,7 +60,7 @@ encodeFieldDefinition field =
   Date min max ->
     Encode.object [
       ( "name", Encode.string field.name )
-    , ( "type", Encode.string "randomInt" )
+    , ( "type", Encode.string "randDate" )
     , ( "min", Encode.string min )
     , ( "max", Encode.string max )
     ]
