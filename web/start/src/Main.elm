@@ -71,6 +71,9 @@ type Msg
   | ChangeGeneratorDefault Int String
   | ChangeGeneratorIntegerMin Int String
   | ChangeGeneratorIntegerMax Int String
+  | ChangeGeneratorDecimalMin Int String
+  | ChangeGeneratorDecimalMax Int String
+  | ChangeGeneratorDecimalPrecision Int String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -137,7 +140,55 @@ update msg model =
           if (index == i) then
             case item.generator of
             Integer min max ->
-              { item | generator = Integer min (Maybe.withDefault 0 (String.toInt value)) }
+              { item | generator = Integer min (Maybe.withDefault 100 (String.toInt value)) }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorDecimalMin i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Decimal min max precision ->
+              { item | generator = Decimal (Maybe.withDefault 0.0 (String.toFloat value)) max precision }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorDecimalMax i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Decimal min max precision ->
+              { item | generator = Decimal min (Maybe.withDefault 1.0 (String.toFloat value)) precision }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorDecimalPrecision i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Decimal min max precision ->
+              { item | generator = Decimal min max (Maybe.withDefault 2 (String.toInt value)) }
             _ ->
               item
           else
@@ -186,9 +237,9 @@ viewFieldDefinition i f =
   Decimal min max precision ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Min value", value (String.fromFloat min) ] []
-      ,input [ type_ "text", placeholder "Max value", value (String.fromFloat max) ] []
-      ,input [ type_ "text", placeholder "Precision", value (String.fromInt precision) ] []
+      ,input [ type_ "text", placeholder "Min value", value (String.fromFloat min), onInput (ChangeGeneratorDecimalMin i) ] []
+      ,input [ type_ "text", placeholder "Max value", value (String.fromFloat max), onInput (ChangeGeneratorDecimalMax i) ] []
+      ,input [ type_ "text", placeholder "Precision", value (String.fromInt precision), onInput (ChangeGeneratorDecimalPrecision i) ] []
     ]
   Date min max ->
     div [] [
