@@ -4,6 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Array exposing (..)
 
 
 
@@ -45,10 +46,10 @@ type alias FieldDefinition =
   }
 
 
-type alias Model = List FieldDefinition
+type alias Model = Array FieldDefinition
 
 init : () -> ( Model, Cmd Msg )
-init _ = ([
+init _ = (fromList [
       FieldDefinition "first_name" (Ref "pimo://nameFR") None
     , FieldDefinition "last_name" (Ref "pimo://surnameFR") None
     , FieldDefinition "email" (Custom "{{ .first_name | lower | NoAccent }}.{{ .last_name | lower | NoAccent }}@yopmail.fr") None
@@ -66,22 +67,35 @@ type Msg
   | AddDate
   | AddRef
   | AddCustom
+  | ChangeFieldName Int String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     AddDefault ->
-      ( model ++ [FieldDefinition "" (Default "") None], Cmd.none )
+      ( push (FieldDefinition "" (Default "") None) model, Cmd.none )
     AddInteger ->
-      ( model ++ [FieldDefinition "" (Integer 0 100) None], Cmd.none )
+      ( push (FieldDefinition "" (Integer 0 100) None) model, Cmd.none )
     AddDecimal ->
-      ( model ++ [FieldDefinition "" (Decimal 0.0 1.0 2) None], Cmd.none )
+      ( push (FieldDefinition "" (Decimal 0.0 1.0 2) None) model, Cmd.none )
     AddDate ->
-      ( model ++ [FieldDefinition "" (Date "" "") None], Cmd.none )
+      ( push (FieldDefinition "" (Date "" "") None) model, Cmd.none )
     AddRef ->
-      ( model ++ [FieldDefinition "" (Ref "") None], Cmd.none )
+      ( push (FieldDefinition "" (Ref "") None) model, Cmd.none )
     AddCustom ->
-      ( model ++ [FieldDefinition "" (Custom "") None], Cmd.none )
+      ( push (FieldDefinition "" (Custom "") None) model, Cmd.none )
+    ChangeFieldName i name ->
+      let
+        updateFieldName index item =
+          if (index == i) then
+            { item | name = name }
+          else
+            item
+
+        items =
+          Array.indexedMap updateFieldName model
+      in
+        ( items, Cmd.none )
 
 
 
@@ -93,7 +107,7 @@ view model =
   , body = [
         div [] [
             div []
-            (List.map viewFieldDefinition model)
+            (List.indexedMap viewFieldDefinition (toList model))
             , button [ onClick AddDefault ] [ text "+ Regex" ]
             , button [ onClick AddInteger ] [ text "+ Int" ]
             , button [ onClick AddDecimal ] [ text "+ Decimal" ]
@@ -104,40 +118,40 @@ view model =
     ]
   }
 
-viewFieldDefinition : FieldDefinition -> Html Msg
-viewFieldDefinition f =
+viewFieldDefinition : Int -> FieldDefinition -> Html Msg
+viewFieldDefinition i f =
   case f.generator of
   Default regex ->
     div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name ] []
+       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Regex", value regex ] []
     ]
   Integer min max ->
     div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name ] []
+       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Min value", value (String.fromInt min) ] []
       ,input [ type_ "text", placeholder "Max value", value (String.fromInt max) ] []
     ]
   Decimal min max precision ->
     div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name ] []
+       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Min value", value (String.fromFloat min) ] []
       ,input [ type_ "text", placeholder "Max value", value (String.fromFloat max) ] []
       ,input [ type_ "text", placeholder "Precision", value (String.fromInt precision) ] []
     ]
   Date min max ->
     div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name ] []
+       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Min date", value min ] []
       ,input [ type_ "text", placeholder "Max date", value max ] []
     ]
   Ref uri ->
     div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name ] []
+       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Referential URI", value uri ] []
     ]
   Custom template ->
     div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name ] []
+       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Template", value template ] []
     ]
