@@ -74,6 +74,10 @@ type Msg
   | ChangeGeneratorDecimalMin Int String
   | ChangeGeneratorDecimalMax Int String
   | ChangeGeneratorDecimalPrecision Int String
+  | ChangeGeneratorDateMin Int String
+  | ChangeGeneratorDateMax Int String
+  | ChangeGeneratorRefUri Int String
+  | ChangeGeneratorCustomTemplate Int String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -198,6 +202,70 @@ update msg model =
           Array.indexedMap updateGenerator model
       in
         ( items, Cmd.none )
+    ChangeGeneratorDateMin i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Date min max ->
+              { item | generator = Date value max }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorDateMax i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Date min max ->
+              { item | generator = Date min value }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorRefUri i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Ref _ ->
+              { item | generator = Ref value}
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorCustomTemplate i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Custom _ ->
+              { item | generator = Custom value}
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
 
 
 
@@ -244,16 +312,16 @@ viewFieldDefinition i f =
   Date min max ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Min date", value min ] []
-      ,input [ type_ "text", placeholder "Max date", value max ] []
+      ,input [ type_ "text", placeholder "Min date", value min, onInput (ChangeGeneratorDateMin i) ] []
+      ,input [ type_ "text", placeholder "Max date", value max, onInput (ChangeGeneratorDateMax i) ] []
     ]
   Ref uri ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Referential URI", value uri ] []
+      ,input [ type_ "text", placeholder "Referential URI", value uri, onInput (ChangeGeneratorRefUri i) ] []
     ]
   Custom template ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Template", value template ] []
+      ,input [ type_ "text", placeholder "Template", value template, onInput (ChangeGeneratorCustomTemplate i) ] []
     ]
