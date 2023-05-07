@@ -25,16 +25,31 @@ subscriptions _ =
 
 -- MODEL
 
+type FieldType
+  = Default String          -- regex
+  | Integer Int Int         -- min, max
+  | Decimal Float Float Int -- min, max, precision
+  | Date    String String   -- min, max
+  | Ref     String          -- uri
+  | Custom  String          -- template
+
 type alias FieldDefinition =
   { name : String,
-    generator : String
+    generator : FieldType
   }
 
 
 type alias Model = List FieldDefinition
 
 init : () -> ( Model, Cmd Msg )
-init _ = ([FieldDefinition "test" "test",FieldDefinition "test2" "test2"], Cmd.none )
+init _ = ([
+      FieldDefinition "string" (Default "[A-Z]{10}")
+    , FieldDefinition "integer" (Integer 0 100)
+    , FieldDefinition "decimal" (Decimal 0.0 1.0 2)
+    , FieldDefinition "date" (Date "1970-01-01T00:00:00Z" "2020-01-01T00:00:00Z")
+    , FieldDefinition "referential" (Ref "pimo://nameFR")
+    , FieldDefinition "custom" (Custom "{{.surname | NoAccent | upper}}.{{.name | NoAccent | lower}}@gmail.com")
+  ], Cmd.none )
 
 
 
@@ -47,7 +62,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     AddFieldDefinition ->
-      ( model ++ [FieldDefinition "name" "generator"], Cmd.none )
+      ( model ++ [FieldDefinition "" (Default "")], Cmd.none )
 
 
 
@@ -67,7 +82,38 @@ view model =
 
 viewFieldDefinition : FieldDefinition -> Html Msg
 viewFieldDefinition f =
-  div [] [
-    input [ type_ "text", value f.name ] [],
-    input [ type_ "text", value f.generator ] []
-  ]
+  case f.generator of
+  Default regex ->
+    div [] [
+       input [ type_ "text", value f.name ] []
+      ,input [ type_ "text", value regex ] []
+    ]
+  Integer min max ->
+    div [] [
+       input [ type_ "text", value f.name ] []
+      ,input [ type_ "text", value (String.fromInt min) ] []
+      ,input [ type_ "text", value (String.fromInt max) ] []
+    ]
+  Decimal min max precision ->
+    div [] [
+       input [ type_ "text", value f.name ] []
+      ,input [ type_ "text", value (String.fromFloat min) ] []
+      ,input [ type_ "text", value (String.fromFloat max) ] []
+      ,input [ type_ "text", value (String.fromInt precision) ] []
+    ]
+  Date min max ->
+    div [] [
+       input [ type_ "text", value f.name ] []
+      ,input [ type_ "text", value min ] []
+      ,input [ type_ "text", value max ] []
+    ]
+  Ref uri ->
+    div [] [
+       input [ type_ "text", value f.name ] []
+      ,input [ type_ "text", value uri ] []
+    ]
+  Custom template ->
+    div [] [
+       input [ type_ "text", value f.name ] []
+      ,input [ type_ "text", value template ] []
+    ]
