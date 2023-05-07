@@ -53,7 +53,7 @@ init _ = (Array.fromList [
       FieldDefinition "first_name" (Ref "pimo://nameFR") None
     , FieldDefinition "last_name" (Ref "pimo://surnameFR") None
     , FieldDefinition "email" (Custom "{{ .first_name | lower | NoAccent }}.{{ .last_name | lower | NoAccent }}@yopmail.fr") None
-    , FieldDefinition "birthdate" (Date "1970-01-01T00:00:00Z" "2020-01-01T00:00:00Z") None
+    , FieldDefinition "birthdate" (Date "1970-01-01T00:00:00" "2020-01-01T00:00:00") None
   ], Cmd.none )
 
 
@@ -312,8 +312,8 @@ viewFieldDefinition i f =
   Date min max ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Min date", value min, onInput (ChangeGeneratorDateMin i) ] []
-      ,input [ type_ "text", placeholder "Max date", value max, onInput (ChangeGeneratorDateMax i) ] []
+      ,input [ type_ "datetime-local", placeholder "Min date", value min, onInput (ChangeGeneratorDateMin i) ] []
+      ,input [ type_ "datetime-local", placeholder "Max date", value max, onInput (ChangeGeneratorDateMax i) ] []
     ]
   Ref uri ->
     div [] [
