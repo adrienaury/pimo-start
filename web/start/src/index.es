@@ -3,7 +3,7 @@ import { Elm } from "./Main";
 var app = Elm.Main.init();
 
 app.ports.sendMessage.subscribe(function (message) {
-    let yaml = "";
+    let yaml = `version: "1"\nmasking:\n`;
 
     message.forEach((element) => {
         const name = element.name;
@@ -29,7 +29,7 @@ app.ports.sendMessage.subscribe(function (message) {
                 yamlElement += `    randomDecimal:\n      min: ${element.min}\n      max: ${element.max}\n      precision: ${element.precision}\n`;
                 break;
             case "randDate":
-                yamlElement += `    randDate:\n      dateMin: "${element.min}"\n      dateMax: "${element.max}"\n`;
+                yamlElement += `    randDate:\n      dateMin: "${element.min}Z"\n      dateMax: "${element.max}Z"\n`;
                 break;
         }
 
