@@ -1,14 +1,25 @@
+module Main exposing (init, main, update, view)
+
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (..)
 
 
 
 -- MAIN
 
+main : Program () Model Msg
 main =
-  Browser.sandbox { init = init, update = update, view = view }
+  Browser.document { init = init, update = update, view = view, subscriptions = subscriptions }
+
+
+
+-- SUBSCRIPTIONS
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+  Sub.none
 
 
 
@@ -22,8 +33,8 @@ type alias FieldDefinition =
 
 type alias Model = List FieldDefinition
 
-init : Model
-init = [FieldDefinition "test" "test",FieldDefinition "test2" "test2"]
+init : () -> ( Model, Cmd Msg )
+init _ = ([FieldDefinition "test" "test",FieldDefinition "test2" "test2"], Cmd.none )
 
 
 
@@ -32,21 +43,31 @@ init = [FieldDefinition "test" "test",FieldDefinition "test2" "test2"]
 type Msg
   = AddFieldDefinition
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     AddFieldDefinition ->
-      FieldDefinition "name" "generator" :: model
+      ( model ++ [FieldDefinition "name" "generator"], Cmd.none )
 
 
 
 -- VIEW
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-  div []
-    (List.map viewFieldDefinition model)
+  { title = "URL Interceptor"
+  , body = [
+        div [] [
+            div []
+            (List.map viewFieldDefinition model),
+            button [ onClick AddFieldDefinition ] [ text "+" ]
+        ]
+    ]
+  }
 
 viewFieldDefinition : FieldDefinition -> Html Msg
 viewFieldDefinition f =
-  text f.name
+  div [] [
+    input [ type_ "text", value f.name ] [],
+    input [ type_ "text", value f.generator ] []
+  ]
