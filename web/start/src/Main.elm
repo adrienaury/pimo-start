@@ -4,7 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Array exposing (..)
+import Array exposing (Array)
 
 
 
@@ -49,7 +49,7 @@ type alias FieldDefinition =
 type alias Model = Array FieldDefinition
 
 init : () -> ( Model, Cmd Msg )
-init _ = (fromList [
+init _ = (Array.fromList [
       FieldDefinition "first_name" (Ref "pimo://nameFR") None
     , FieldDefinition "last_name" (Ref "pimo://surnameFR") None
     , FieldDefinition "email" (Custom "{{ .first_name | lower | NoAccent }}.{{ .last_name | lower | NoAccent }}@yopmail.fr") None
@@ -73,17 +73,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     AddDefault ->
-      ( push (FieldDefinition "" (Default "") None) model, Cmd.none )
+      ( Array.push (FieldDefinition "" (Default "") None) model, Cmd.none )
     AddInteger ->
-      ( push (FieldDefinition "" (Integer 0 100) None) model, Cmd.none )
+      ( Array.push (FieldDefinition "" (Integer 0 100) None) model, Cmd.none )
     AddDecimal ->
-      ( push (FieldDefinition "" (Decimal 0.0 1.0 2) None) model, Cmd.none )
+      ( Array.push (FieldDefinition "" (Decimal 0.0 1.0 2) None) model, Cmd.none )
     AddDate ->
-      ( push (FieldDefinition "" (Date "" "") None) model, Cmd.none )
+      ( Array.push (FieldDefinition "" (Date "" "") None) model, Cmd.none )
     AddRef ->
-      ( push (FieldDefinition "" (Ref "") None) model, Cmd.none )
+      ( Array.push (FieldDefinition "" (Ref "") None) model, Cmd.none )
     AddCustom ->
-      ( push (FieldDefinition "" (Custom "") None) model, Cmd.none )
+      ( Array.push (FieldDefinition "" (Custom "") None) model, Cmd.none )
     ChangeFieldName i name ->
       let
         updateFieldName index item =
@@ -107,7 +107,7 @@ view model =
   , body = [
         div [] [
             div []
-            (List.indexedMap viewFieldDefinition (toList model))
+            (List.indexedMap viewFieldDefinition (Array.toList model))
             , button [ onClick AddDefault ] [ text "+ Regex" ]
             , button [ onClick AddInteger ] [ text "+ Int" ]
             , button [ onClick AddDecimal ] [ text "+ Decimal" ]
