@@ -68,6 +68,9 @@ type Msg
   | AddRef
   | AddCustom
   | ChangeFieldName Int String
+  | ChangeGeneratorDefault Int String
+  | ChangeGeneratorIntegerMin Int String
+  | ChangeGeneratorIntegerMax Int String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -94,6 +97,54 @@ update msg model =
 
         items =
           Array.indexedMap updateFieldName model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorDefault i regex ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Default r ->
+              { item | generator = Default regex}
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorIntegerMin i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Integer min max ->
+              { item | generator = Integer (Maybe.withDefault 0 (String.toInt value)) max }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
+      in
+        ( items, Cmd.none )
+    ChangeGeneratorIntegerMax i value ->
+      let
+        updateGenerator index item =
+          if (index == i) then
+            case item.generator of
+            Integer min max ->
+              { item | generator = Integer min (Maybe.withDefault 0 (String.toInt value)) }
+            _ ->
+              item
+          else
+            item
+
+        items =
+          Array.indexedMap updateGenerator model
       in
         ( items, Cmd.none )
 
@@ -124,13 +175,13 @@ viewFieldDefinition i f =
   Default regex ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Regex", value regex ] []
+      ,input [ type_ "text", placeholder "Regex", value regex, onInput (ChangeGeneratorDefault i) ] []
     ]
   Integer min max ->
     div [] [
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Min value", value (String.fromInt min) ] []
-      ,input [ type_ "text", placeholder "Max value", value (String.fromInt max) ] []
+      ,input [ type_ "text", placeholder "Min value", value (String.fromInt min), onInput (ChangeGeneratorIntegerMin i) ] []
+      ,input [ type_ "text", placeholder "Max value", value (String.fromInt max), onInput (ChangeGeneratorIntegerMax i) ] []
     ]
   Decimal min max precision ->
     div [] [
