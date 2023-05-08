@@ -11,28 +11,28 @@ export default (isProd) => {
         {
           test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          use: {
+          use: [{
+            loader: "elm-asset-webpack-loader"
+          },{
             loader: "elm-webpack-loader",
             options: {
               debug: !isProd
             }
-          }
+          }]
         },
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader', 'postcss-loader'],
         },
         {
-          test: /\.ttf$/,
-          type: 'asset',
+          test: /\.png$/i,
+          loader: "file-loader",
+          type: "asset",
+          options: {
+            name: "static/media/[name].[ext]"
+          }
         },
       ],
-    },
-    devServer: {
-      proxy: {
-        '/play': 'http://localhost:3010',
-        '/flow': 'http://localhost:3010',
-      },
     },
     watchOptions: {
       ignored: /node_modules/,

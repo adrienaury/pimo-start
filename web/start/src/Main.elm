@@ -350,39 +350,225 @@ viewFieldDefinition : Int -> FieldDefinition -> Html Msg
 viewFieldDefinition i f =
   case f.generator of
   Default regex ->
-    div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Regex", value regex, onInput (ChangeGeneratorDefault i) ] []
-    ]
+    article
+        [ style "border-width" "1px"
+        , style "border-color" "#ccc"
+        , style "border-style" "solid"
+        , style "border-radius" "10px"
+        , style "padding" "10px"
+        , style "margin" "10px"
+        ]
+        [ img
+            [ src "static/media/regex.png" -- "require:src/img/regex.png"
+            ]
+            []
+        , h1 []
+            [ input
+                [ type_ "text"
+                , placeholder "Field Name"
+                , value f.name
+                , onInput (ChangeFieldName i)
+                ]
+                []
+            ]
+        , p []
+            [ input
+                [ type_ "text"
+                , placeholder "Regex"
+                , value regex
+                , onInput (ChangeGeneratorDefault i)
+                ]
+                []
+            ]
+        ]
   Integer min max ->
-    div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Min value", value (String.fromInt min), onInput (ChangeGeneratorIntegerMin i) ] []
-      ,input [ type_ "text", placeholder "Max value", value (String.fromInt max), onInput (ChangeGeneratorIntegerMax i) ] []
-    ]
+    article
+        [ style "border-width" "1px"
+        , style "border-color" "#ccc"
+        , style "border-style" "solid"
+        , style "border-radius" "10px"
+        , style "padding" "10px"
+        , style "margin" "10px"
+        ]
+        [ img
+            [ src "static/media/integer.png"
+            ]
+            []
+        , h1 []
+            [ input
+                [ type_ "text"
+                , placeholder "Field Name"
+                , value f.name
+                , onInput (ChangeFieldName i)
+                ]
+                []
+            ]
+        , p []
+            [ input
+              [ type_ "text"
+              , placeholder "Min value"
+              , value (String.fromInt min)
+              , onInput (ChangeGeneratorIntegerMin i)
+              ]
+              []
+            , input
+              [ type_ "text"
+              , placeholder "Max value"
+              , value (String.fromInt max)
+              , onInput (ChangeGeneratorIntegerMax i)
+              ]
+              []
+            ]
+        ]
   Decimal min max precision ->
-    div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Min value", value (String.fromFloat min), onInput (ChangeGeneratorDecimalMin i) ] []
-      ,input [ type_ "text", placeholder "Max value", value (String.fromFloat max), onInput (ChangeGeneratorDecimalMax i) ] []
-      ,input [ type_ "text", placeholder "Precision", value (String.fromInt precision), onInput (ChangeGeneratorDecimalPrecision i) ] []
-    ]
+    article
+        [ style "border-width" "1px"
+        , style "border-color" "#ccc"
+        , style "border-style" "solid"
+        , style "border-radius" "10px"
+        , style "padding" "10px"
+        , style "margin" "10px"
+        ]
+        [ img
+            [ src "static/media/decimal.png"
+            ]
+            []
+        , h1 []
+            [ input
+                [ type_ "text"
+                , placeholder "Field Name"
+                , value f.name
+                , onInput (ChangeFieldName i)
+                ]
+                []
+            ]
+        , p []
+            [ input
+              [ type_ "text"
+              , placeholder "Min value"
+              , value (String.fromFloat min)
+              , onInput (ChangeGeneratorDecimalMin i)
+              ]
+              []
+            , input
+              [ type_ "text"
+              , placeholder "Max value"
+              , value (String.fromFloat max)
+              , onInput (ChangeGeneratorDecimalMax i)
+              ]
+              []
+            , input
+              [ type_ "text"
+              , placeholder "Precision"
+              , value (String.fromInt precision)
+              , onInput (ChangeGeneratorDecimalPrecision i)
+              ]
+              []
+            ]
+        ]
   Date min max ->
-    div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "datetime-local", placeholder "Min date", value min, onInput (ChangeGeneratorDateMin i) ] []
-      ,input [ type_ "datetime-local", placeholder "Max date", value max, onInput (ChangeGeneratorDateMax i) ] []
-    ]
+    article
+        [ style "border-width" "1px"
+        , style "border-color" "#ccc"
+        , style "border-style" "solid"
+        , style "border-radius" "10px"
+        , style "padding" "10px"
+        , style "margin" "10px"
+        ]
+        [ img
+            [ src "static/media/date.png"
+            ]
+            []
+        , h1 []
+            [ input
+                [ type_ "text"
+                , placeholder "Field Name"
+                , value f.name
+                , onInput (ChangeFieldName i)
+                ]
+                []
+            ]
+        , p []
+            [ input
+              [ type_ "datetime-local"
+              , placeholder "Min date"
+              , value min
+              , onInput (ChangeGeneratorDateMin i)
+              ]
+              []
+            , input
+              [ type_ "datetime-local"
+              , placeholder "Max date"
+              , value max
+              , onInput (ChangeGeneratorDateMax i)
+              ]
+              []
+            ]
+        ]
   Ref uri ->
-    div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Referential URI", value uri, onInput (ChangeGeneratorRefUri i) ] []
-    ]
+    article
+        [ style "border-width" "1px"
+        , style "border-color" "#ccc"
+        , style "border-style" "solid"
+        , style "border-radius" "10px"
+        , style "padding" "10px"
+        , style "margin" "10px"
+        ]
+        [ img
+            [ src "static/media/ref.png"
+            ]
+            []
+        , h1 []
+            [ input
+                [ type_ "text"
+                , placeholder "Field Name"
+                , value f.name
+                , onInput (ChangeFieldName i)
+                ]
+                []
+            ]
+        , p []
+            [ input
+              [ type_ "text"
+              , placeholder "Referential URI"
+              , value uri
+              , onInput (ChangeGeneratorRefUri i)
+              ]
+              []
+            ]
+        ]
   Custom template ->
-    div [] [
-       input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
-      ,input [ type_ "text", placeholder "Template", value template, onInput (ChangeGeneratorCustomTemplate i) ] []
-    ]
+    article
+        [ style "border-width" "1px"
+        , style "border-color" "#ccc"
+        , style "border-style" "solid"
+        , style "border-radius" "10px"
+        , style "padding" "10px"
+        , style "margin" "10px"
+        ]
+        [ img
+            [ src "static/media/template.png"
+            ]
+            []
+        , h1 []
+            [ input
+                [ type_ "text"
+                , placeholder "Field Name"
+                , value f.name
+                , onInput (ChangeFieldName i)
+                ]
+                []
+            ]
+        , p []
+            [ input
+              [ type_ "text"
+              , placeholder "Template"
+              , value template
+              , onInput (ChangeGeneratorCustomTemplate i)
+              ]
+              []
+            ]
+        ]
 
 viewMaskingDefinition : FieldDefinition -> Html Msg
 viewMaskingDefinition f =

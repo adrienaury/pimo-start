@@ -1,5 +1,12 @@
 "use strict";
 import { Elm } from "./Main";
+import image1 from "./img/regex.png";
+import image2 from "./img/integer.png";
+import image3 from "./img/decimal.png";
+import image4 from "./img/date.png";
+import image5 from "./img/ref.png";
+import image6 from "./img/template.png";
+
 var app = Elm.Main.init();
 
 app.ports.sendMessage.subscribe(function (message) {
