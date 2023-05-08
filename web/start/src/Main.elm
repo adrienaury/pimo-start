@@ -341,7 +341,8 @@ view model =
             , button [ onClick AddRef ] [ text "+ Ref" ]
             , button [ onClick AddCustom ] [ text "+ Template" ]
             , button [ onClick Save ] [ text "Save" ]
-        ]
+        ],
+        div [] (List.map viewMaskingDefinition (Array.toList model))
     ]
   }
 
@@ -382,3 +383,15 @@ viewFieldDefinition i f =
        input [ type_ "text", placeholder "Field Name", value f.name, onInput (ChangeFieldName i) ] []
       ,input [ type_ "text", placeholder "Template", value template, onInput (ChangeGeneratorCustomTemplate i) ] []
     ]
+
+viewMaskingDefinition : FieldDefinition -> Html Msg
+viewMaskingDefinition f =
+  pre [] [
+  case f.generator of
+    Default regex -> text ("  - selector:\n      jsonpath: \"" ++ f.name ++ "\"\n    mask:\n      regex: \"" ++ regex ++ "\"")
+    Integer min max -> text ("  - selector:\n      jsonpath: \"" ++ f.name ++ "\"\n    mask:\n      randomInt:\n        min: " ++ String.fromInt min ++ "\n        max: " ++ String.fromInt max)
+    Decimal min max precision -> text ("  - selector:\n      jsonpath: \"" ++ f.name ++ "\"\n    mask:\n      randomDecimal:\n        min: " ++ String.fromFloat min ++ "\n        max: " ++ String.fromFloat max ++ "\n        precision: " ++ String.fromInt precision)
+    Date min max -> text ("  - selector:\n      jsonpath: \"" ++ f.name ++ "\"\n    mask:\n      randDate:\n        dateMin: \"" ++ min ++ "Z\"\n        dateMax: \"" ++ max ++ "Z\"")
+    Ref uri -> text ("  - selector:\n      jsonpath: \"" ++ f.name ++ "\"\n    mask:\n      randomChoiceInUri: \"" ++ uri ++ "\"")
+    Custom template -> text ("  - selector:\n      jsonpath: \"" ++ f.name ++ "\"\n    mask:\n      template: \"" ++ template ++ "\"")
+  ]
