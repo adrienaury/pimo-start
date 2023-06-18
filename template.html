@@ -1,71 +1,104 @@
-<main>
-  <header>
-    <h1>List of fields</h1>
-  <header>
-  <article>
-    <h2>sequence</h2>
-    <img src="https://placehold.co/40">
-    <label for="name">Name :</label>
-    <input id="name" type="text" placeholder="jsonpath" value="id">
-    <label for="start">Start :</label>
-    <input id="start" type="number" placeholder="start" value="0">
-    <label for="increment">Increment :</label>
-    <input id="increment" type="number" placeholder="start" value="1">
-    <details>
-      <input id="synthesize" type="checkbox" checked>
-      <label for="synthesize">Synthesize value</label>
-      <input id="transient" type="checkbox" checked>
-      <label for="transient">Transient value</label>
-      <label for="preserve">Preserve :</label>
-      <input id="preserve" type="text" placeholder="none" value="none" list="preserve_list">
-      <datalist id="preserve_list">
-        <option value="none">
-        <option value="null">
-        <option value="empty">
-        <option value="blank">
-      </datalist>
-      <p>
-        Generated value should be coherent with <input id="coherent_with" type="text" placeholder="field1, field2" value=""> and collisions are <select id="collisions">
+<main class="flex flex-row px-5 font-sans leading-8 text-sky-900">
+  <section class="basis-1/2">
+    <header>
+      Fields
+    <header>
+    <article class="shadow-md	bg-zinc-100 rounded-md p-4 my-2">
+      <div class="grid grid-cols-[25%_75%] gap-1">
+        <img src="https://placehold.co/40">
+        <h2 class="uppercase font-bold text-lg">sequence</h2>
+        <label for="name" class="font-medium">Name</label>
+        <input id="name" type="text" placeholder="jsonpath" value="id">
+        <label for="start" class="font-medium">Start</label>
+        <input id="start" type="number" placeholder="start" value="0">
+        <label for="increment" class="font-medium">Increment</label>
+        <input id="increment" type="number" placeholder="start" value="1">
+      </div>
+      <details class="group">
+        <summary>Advanced options</summary>
+        <div class="grid grid-cols-[25%_75%] gap-1">
+        <label for="synthesize" class="font-medium">Synthesize</label>
+        <select id="synthesize">
+          <option value="false">no</option>
+          <option value="true" selected>yes</option>
+        </select>
+        <label for="transient" class="font-medium">Transient</label>
+        <select id="transient">
+          <option value="false">no</option>
+          <option value="true" selected>yes</option>
+        </select>
+        <label for="preserve" class="font-medium">Preserve</label>
+        <select id="preserve">
+          <option value="none" selected>none</option>
+          <option value="null">null</option>
+          <option value="empty">empty</option>
+          <option value="blank">blank</option>
+        </select>
+        <label for="coherent_with" class="font-medium">Coherent with</label>
+        <input id="coherent_with" type="text" placeholder="field1, field2" value="">
+        <label for="collisions" class="font-medium">Collisions</label>
+        <select id="collisions">
           <option value="allowed">allowed</option>
           <option value="forbidden">forbidden</option>
         </select>
-      </p>
-    </details>
-  </article>
-  <article>
-    <h2>choice_ref</h2>
-    <img src="https://placehold.co/40">
-    <label for="name">Name :</label>
-    <input id="name" type="text" placeholder="jsonpath" value="prenom">
-    <label for="uri">URI :</label>
-    <input id="uri" type="url" placeholder="http://domain.com/ref" value="pimo://nameFR">
-    <details>
-      <input id="synthesize" type="checkbox">
-      <label for="synthesize">Synthesize ?</label>
-      <input id="transient" type="checkbox">
-      <label for="transient">Transient ?</label>
-      <input id="identifier" type="checkbox">
-      <label for="identifier">Identifier ?</label>
-      <label for="coherent_with">Coherent with :</label>
-      <input id="coherent_with" type="text" placeholder="field1, field2" value="id">
-      <label for="preserve">Preserve :</label>
-      <input id="preserve" type="text" placeholder="none" value="none" list="preserve_list">
-      <datalist id="preserve_list">
-        <option value="none">
-        <option value="null">
-        <option value="empty">
-        <option value="blank">
-      </datalist>
-    </details>
-  </article>
-  <footer>
-    <button>+regex</button>
-    <button>+integer</button>
-    <button>+decimal</button>
-    <button>+bool</button>
-    <button>+datetime</button>
-    <button>+choice</button>
-    <button>+choice_ref</button>
-    <button>+sequence</button>
-  </footer>
+        </div>
+      </details>
+    </article>
+    <article class="shadow-md	bg-zinc-100 rounded-md p-4 my-2">
+      <div class="grid grid-cols-[25%_75%] gap-1">
+        <img src="https://placehold.co/40">
+        <h2 class="uppercase font-bold text-lg">choice_ref</h2>
+        <label for="name" class="font-medium">Name</label>
+        <input id="name" type="text" placeholder="jsonpath" value="prenom">
+        <label for="uri" class="font-medium">URI</label>
+        <input id="uri" type="url" placeholder="http://domain.com/ref" value="pimo://nameFR">
+      </div>
+      <details class="group">
+        <summary>Advanced options</summary>
+        <div class="grid grid-cols-[25%_75%] gap-1">
+        <label for="synthesize" class="font-medium">Synthesize</label>
+        <select id="synthesize">
+          <option value="false">no</option>
+          <option value="true">yes</option>
+        </select>
+        <label for="transient" class="font-medium">Transient</label>
+        <select id="transient">
+          <option value="false">no</option>
+          <option value="true">yes</option>
+        </select>
+        <label for="preserve" class="font-medium">Preserve</label>
+        <select id="preserve">
+          <option value="none" selected>none</option>
+          <option value="null">null</option>
+          <option value="empty">empty</option>
+          <option value="blank">blank</option>
+        </select>
+        <label for="coherent_with" class="font-medium">Coherent with</label>
+        <input id="coherent_with" type="text" placeholder="field1, field2" value="id">
+        <label for="collisions" class="font-medium">Collisions</label>
+        <select id="collisions">
+          <option value="allowed">allowed</option>
+          <option value="forbidden">forbidden</option>
+        </select>
+        </div>
+      </details>
+    </article>
+    <footer>
+      <button>+regex</button>
+      <button>+integer</button>
+      <button>+decimal</button>
+      <button>+bool</button>
+      <button>+datetime</button>
+      <button>+choice</button>
+      <button>+choice_ref</button>
+      <button>+sequence</button>
+    </footer>
+  </section>
+  <section>
+    <header>
+      Masking.yml
+    </header>
+    <textarea>
+    </textarea>
+  </section>
 </main>
