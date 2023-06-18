@@ -1,0 +1,69 @@
+<main>
+  <header>
+    <h1>List of fields</h1>
+  <header>
+  <article>
+    <h2>sequence</h2>
+    <img src="https://placehold.co/40">
+    <label for="name">Name :</label>
+    <input id="name" type="text" placeholder="jsonpath" value="id">
+    <label for="start">Start :</label>
+    <input id="start" type="number" placeholder="start" value="0">
+    <label for="increment">Increment :</label>
+    <input id="increment" type="number" placeholder="start" value="1">
+    <details>
+      <input id="synthesize" type="checkbox" checked>
+      <label for="synthesize">Synthesize ?</label>
+      <input id="transient" type="checkbox" checked>
+      <label for="transient">Transient ?</label>
+      <input id="identifier" type="checkbox">
+      <label for="identifier">Identifier ?</label>
+      <label for="coherent_with">Coherent with :</label>
+      <input id="coherent_with" type="text" placeholder="field1, field2" value="">
+      <label for="preserve">Preserve :</label>
+      <input id="preserve" type="text" placeholder="none" value="none" list="preserve_list">
+      <datalist id="preserve_list">
+        <option value="none">
+        <option value="null">
+        <option value="empty">
+        <option value="blank">
+      </datalist>
+    </details>
+  </article>
+  <article>
+    <h2>choice_ref</h2>
+    <img src="https://placehold.co/40">
+    <label for="name">Name :</label>
+    <input id="name" type="text" placeholder="jsonpath" value="prenom">
+    <label for="uri">URI :</label>
+    <input id="uri" type="url" placeholder="http://domain.com/ref" value="pimo://nameFR">
+    <details>
+      <input id="synthesize" type="checkbox">
+      <label for="synthesize">Synthesize ?</label>
+      <input id="transient" type="checkbox">
+      <label for="transient">Transient ?</label>
+      <input id="identifier" type="checkbox">
+      <label for="identifier">Identifier ?</label>
+      <label for="coherent_with">Coherent with :</label>
+      <input id="coherent_with" type="text" placeholder="field1, field2" value="id">
+      <label for="preserve">Preserve :</label>
+      <input id="preserve" type="text" placeholder="none" value="none" list="preserve_list">
+      <datalist id="preserve_list">
+        <option value="none">
+        <option value="null">
+        <option value="empty">
+        <option value="blank">
+      </datalist>
+    </details>
+  </article>
+  <footer>
+    <button>+regex</button>
+    <button>+integer</button>
+    <button>+decimal</button>
+    <button>+bool</button>
+    <button>+datetime</button>
+    <button>+choice</button>
+    <button>+choice_ref</button>
+    <button>+sequence</button>
+  </footer>
+</main>
