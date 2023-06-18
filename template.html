@@ -13,13 +13,9 @@
     <input id="increment" type="number" placeholder="start" value="1">
     <details>
       <input id="synthesize" type="checkbox" checked>
-      <label for="synthesize">Synthesize ?</label>
+      <label for="synthesize">Synthesize value</label>
       <input id="transient" type="checkbox" checked>
-      <label for="transient">Transient ?</label>
-      <input id="identifier" type="checkbox">
-      <label for="identifier">Identifier ?</label>
-      <label for="coherent_with">Coherent with :</label>
-      <input id="coherent_with" type="text" placeholder="field1, field2" value="">
+      <label for="transient">Transient value</label>
       <label for="preserve">Preserve :</label>
       <input id="preserve" type="text" placeholder="none" value="none" list="preserve_list">
       <datalist id="preserve_list">
@@ -28,6 +24,12 @@
         <option value="empty">
         <option value="blank">
       </datalist>
+      <p>
+        Generated value should be coherent with <input id="coherent_with" type="text" placeholder="field1, field2" value=""> and collisions are <select id="collisions">
+          <option value="allowed">allowed</option>
+          <option value="forbidden">forbidden</option>
+        </select>
+      </p>
     </details>
   </article>
   <article>
