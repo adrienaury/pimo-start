@@ -78,7 +78,7 @@ preserveDecoder =
 maskDecoder : Decoder Mask
 maskDecoder =
     oneOf
-        [ maskAddDecoder, maskAddTransientDecoder, maskConstantDecoder, maskRegexDecoder ]
+        [ maskAddDecoder, maskAddTransientDecoder, maskTemplateDecoder, maskConstantDecoder, maskRegexDecoder ]
 
 
 
@@ -105,6 +105,16 @@ maskAddTransientDecoder =
     in
     map AddTransient
         (field "add-transient" value |> andThen (create >> fromResult))
+
+
+maskTemplateDecoder : Decoder Mask
+maskTemplateDecoder =
+    let
+        create : String -> Result String { value : String }
+        create value =
+            Ok { value = value }
+    in
+    map Template (field "template" string |> andThen (create >> fromResult))
 
 
 maskConstantDecoder : Decoder Mask

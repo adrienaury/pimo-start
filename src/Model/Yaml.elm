@@ -35,6 +35,7 @@ type alias Selector =
 type Mask
     = Add { value : Value }
     | AddTransient { value : Value }
+    | Template { value : String }
     | Regex { pattern : String }
     | Constant { value : Value }
     | Choice { choices : List Value }
