@@ -13,6 +13,11 @@ RUN    wget -nv -O- https://github.com/mitchellh/golicense/releases/download/v${
     && wget -nv -O- https://github.com/johnkerl/miller/releases/download/v${VERSION_MILLER}/miller-${VERSION_MILLER}-linux-amd64.tar.gz | tar xz --strip-components 1 -C /usr/bin miller-${VERSION_MILLER}-linux-amd64/mlr \
     && chmod +x /usr/bin/golicense /usr/bin/mlr
 
+# curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
+# gunzip elm.gz
+# chmod +x elm
+# sudo mv elm /usr/local/bin/
+
 ENV http_proxy ${http_proxy:-}
 ENV https_proxy ${https_proxy:-}
 ENV no_proxy ${no_proxy:-}

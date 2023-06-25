@@ -1,13 +1,20 @@
 module Model.Main exposing (..)
 
+import Model.Yaml exposing (Config)
+
+
 type Preserve
-  = None
-  | Null
-  | Empty
-  | Blank
+    = None
+    | Null
+    | Empty
+    | Blank
+
 
 type Generator
-  = Regex        String                             -- pattern
+    = Regex String -- pattern
+
+
+
 --   | Integer      Int Int                            -- min, max
 --   | Sequence     Int Int                            -- start, increment
 --   | Boolean      Int Int                            -- weightTrue, weightFalse
@@ -17,19 +24,24 @@ type Generator
 --   | ChoiceRefCsv String Bool String String Int Bool -- uri, hasHeader, separator, comment, fieldNumber, doTrim
 --   | Template     String                             -- template
 
+
 type alias FieldDefinition =
-  { name : String
-  , generator : Generator
-  , synthesize : Bool
-  , transient : Bool
-  , preserve : Preserve
-  , coherent_with : List String
-  , avoid_collisions : Bool
-  }
+    { name : String
+    , generator : Generator
+    , synthesize : Bool
+    , transient : Bool
+    , preserve : Preserve
+    , coherent_with : List String
+    , avoid_collisions : Bool
+    }
+
 
 type alias Model =
-  { fields : List FieldDefinition
-  }
+    { fields : List FieldDefinition
+    , test : Maybe Config
+    }
+
 
 newRegex : FieldDefinition
-newRegex = (FieldDefinition "" (Regex "") False False None [] False)
+newRegex =
+    FieldDefinition "" (Regex "") False False None [] False
