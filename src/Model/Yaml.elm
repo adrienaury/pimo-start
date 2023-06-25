@@ -23,6 +23,7 @@ type alias Masking =
     , masks : List Mask
     , seed : Maybe Seed
     , cache : Maybe String
+    , preserve : Maybe Preserve
     }
 
 
@@ -44,6 +45,12 @@ type alias Seed =
     }
 
 
+type Preserve
+    = Null
+    | Empty
+    | Blank
+
+
 
 -- DECODER
 
@@ -57,11 +64,12 @@ cacheDecoder =
 
 maskingDecoder : Decoder Masking
 maskingDecoder =
-    map4 Masking
+    map5 Masking
         selectorDecoder
         (at [ "masks" ] (list maskDecoder))
         (maybe (at [ "seed" ] seedDecoder))
         (maybe (at [ "cache" ] string))
+        (maybe preserveDecoder)
 
 
 selectorDecoder : Decoder Selector
@@ -96,6 +104,26 @@ configDecoder =
         (maybe (field "seed" int))
         (maybe (at [ "caches" ] (dict cacheDecoder)))
         (at [ "masking" ] (list maskingDecoder))
+
+
+preserveDecoder : Decoder Preserve
+preserveDecoder =
+    let
+        checkPreserve : String -> Result String Preserve
+        checkPreserve value =
+            if value == "null" then
+                Ok Null
+
+            else if value == "empty" then
+                Ok Empty
+
+            else if value == "blank" then
+                Ok Blank
+
+            else
+                Err "invalid preserve value"
+    in
+    field "preserve" string |> andThen (checkPreserve >> fromResult)
 
 
 maskDecoder : Decoder Mask
