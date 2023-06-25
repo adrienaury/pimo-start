@@ -34,6 +34,7 @@ type alias Selector =
 
 type Mask
     = Add { value : Value }
+    | AddTransient { value : Value }
     | Regex { pattern : String }
     | Constant { value : Value }
     | Choice { choices : List Value }
@@ -129,17 +130,11 @@ preserveDecoder =
 maskDecoder : Decoder Mask
 maskDecoder =
     oneOf
-        [ maskAddDecoder, maskRegexDecoder ]
+        [ maskAddDecoder, maskAddTransientDecoder, maskRegexDecoder ]
 
 
-maskRegexDecoder : Decoder Mask
-maskRegexDecoder =
-    let
-        create : String -> Result String { pattern : String }
-        create pattern =
-            Ok { pattern = pattern }
-    in
-    map Regex (field "regex" string |> andThen (create >> fromResult))
+
+-- MASKS
 
 
 maskAddDecoder : Decoder Mask
@@ -151,6 +146,27 @@ maskAddDecoder =
     in
     map Add
         (field "add" value |> andThen (create >> fromResult))
+
+
+maskAddTransientDecoder : Decoder Mask
+maskAddTransientDecoder =
+    let
+        create : Value -> Result String { value : Value }
+        create value =
+            Ok { value = value }
+    in
+    map AddTransient
+        (field "add-transient" value |> andThen (create >> fromResult))
+
+
+maskRegexDecoder : Decoder Mask
+maskRegexDecoder =
+    let
+        create : String -> Result String { pattern : String }
+        create pattern =
+            Ok { pattern = pattern }
+    in
+    map Regex (field "regex" string |> andThen (create >> fromResult))
 
 
 decodeConfig : String -> Result Error Config
