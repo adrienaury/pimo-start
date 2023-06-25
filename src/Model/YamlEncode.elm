@@ -41,9 +41,20 @@ cachesEncoder caches =
 cacheEncoder : Cache -> Encoder
 cacheEncoder cache =
     record
-        [ ( "unique", bool True )
-        , ( "reverse", bool True )
-        ]
+        ([]
+            ++ optionalBoolEncoder cache.unique "unique"
+            ++ optionalBoolEncoder cache.reverse "reverse"
+        )
+
+
+optionalBoolEncoder : Maybe Bool -> String -> List ( String, Encoder )
+optionalBoolEncoder value name =
+    case value of
+        Just s ->
+            [ ( name, bool s ) ]
+
+        Nothing ->
+            []
 
 
 encodeConfig : Maybe Config -> String
