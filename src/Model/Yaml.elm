@@ -34,7 +34,7 @@ type alias Selector =
 type Mask
     = Add { value : Value }
     | Regex { pattern : String }
-    | Constant { value : String }
+    | Constant { value : Value }
     | Choice { choices : List Value }
     | ChoiceRef { uri : String }
 
