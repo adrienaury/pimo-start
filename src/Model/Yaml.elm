@@ -8,8 +8,7 @@ type alias Config =
     { version : String
     , seed : Maybe Int
     , caches : Dict String Cache
-
-    -- , maskings : List Masking
+    , maskings : List Masking
     }
 
 
@@ -62,17 +61,38 @@ cacheDecoder =
 maskingDecoder : Decoder Masking
 maskingDecoder =
     map3 Masking
-        (succeed (Selector []))
+        selectorDecoder
         (succeed [])
         (succeed { field = "" })
 
 
+selectorDecoder : Decoder Selector
+selectorDecoder =
+    map Selector
+        (oneOf
+            [ stringDecoderToListDecoder (at [ "selector" ] (field "jsonpath" string))
+            , at [ "selectors" ] (list (field "jsonpath" string))
+            ]
+        )
+
+
+stringDecoderToListDecoder : Decoder String -> Decoder (List String)
+stringDecoderToListDecoder d =
+    let
+        stringToList : String -> Result String (List String)
+        stringToList value =
+            Ok [ value ]
+    in
+    d |> andThen (stringToList >> fromResult)
+
+
 configDecoder : Decoder Config
 configDecoder =
-    map3 Config
+    map4 Config
         (field "version" string)
         (maybe (field "seed" int))
         (at [ "caches" ] (dict cacheDecoder))
+        (at [ "masking" ] (list maskingDecoder))
 
 
 decodeConfig : String -> Result Error Config
