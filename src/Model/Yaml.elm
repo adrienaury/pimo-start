@@ -7,7 +7,7 @@ import Yaml.Decode exposing (..)
 type alias Config =
     { version : String
     , seed : Maybe Int
-    , caches : Dict String Cache
+    , caches : Maybe (Dict String Cache)
     , maskings : List Masking
     }
 
@@ -21,7 +21,8 @@ type alias Cache =
 type alias Masking =
     { selector : Selector
     , masks : List Mask
-    , seed : Seed
+    , seed : Maybe Seed
+    , cache : Maybe String
     }
 
 
@@ -60,10 +61,11 @@ cacheDecoder =
 
 maskingDecoder : Decoder Masking
 maskingDecoder =
-    map3 Masking
+    map4 Masking
         selectorDecoder
         (succeed [])
-        (succeed { field = "" })
+        (maybe (at [ "seed" ] seedDecoder))
+        (maybe (at [ "cache" ] string))
 
 
 selectorDecoder : Decoder Selector
@@ -74,6 +76,11 @@ selectorDecoder =
             , at [ "selectors" ] (list (field "jsonpath" string))
             ]
         )
+
+
+seedDecoder : Decoder Seed
+seedDecoder =
+    map Seed (at [ "field" ] string)
 
 
 stringDecoderToListDecoder : Decoder String -> Decoder (List String)
@@ -91,7 +98,7 @@ configDecoder =
     map4 Config
         (field "version" string)
         (maybe (field "seed" int))
-        (at [ "caches" ] (dict cacheDecoder))
+        (maybe (at [ "caches" ] (dict cacheDecoder)))
         (at [ "masking" ] (list maskingDecoder))
 
 
@@ -108,5 +115,14 @@ decodeConfigOrNothing yaml =
         Ok c ->
             Just c
 
-        Err _ ->
+        Err error ->
+            let
+                _ =
+                    case error of
+                        Parsing msg ->
+                            Debug.log msg
+
+                        Decoding msg ->
+                            Debug.log msg
+            in
             Nothing
