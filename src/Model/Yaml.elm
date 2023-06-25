@@ -63,7 +63,7 @@ maskingDecoder : Decoder Masking
 maskingDecoder =
     map4 Masking
         selectorDecoder
-        (succeed [])
+        (at [ "masks" ] (list maskDecoder))
         (maybe (at [ "seed" ] seedDecoder))
         (maybe (at [ "cache" ] string))
 
@@ -100,6 +100,22 @@ configDecoder =
         (maybe (field "seed" int))
         (maybe (at [ "caches" ] (dict cacheDecoder)))
         (at [ "masking" ] (list maskingDecoder))
+
+
+maskDecoder : Decoder Mask
+maskDecoder =
+    oneOf
+        [ maskRegexDecoder ]
+
+
+maskRegexDecoder : Decoder Mask
+maskRegexDecoder =
+    let
+        create : String -> Result String { pattern : String }
+        create pattern =
+            Ok { pattern = pattern }
+    in
+    map Regex (field "regex" string |> andThen (create >> fromResult))
 
 
 decodeConfig : String -> Result Error Config
