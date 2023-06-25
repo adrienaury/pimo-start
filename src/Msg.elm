@@ -2,7 +2,7 @@ port module Msg exposing (..)
 
 import Model.Main exposing (..)
 import Model.Utilities exposing (..)
-import Model.Yaml exposing (decodeConfigOrNothing)
+import Model.YamlDecode exposing (decodeConfigOrNothing)
 import Yaml
 
 
