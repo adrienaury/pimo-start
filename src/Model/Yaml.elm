@@ -32,7 +32,8 @@ type alias Selector =
 
 
 type Mask
-    = Regex { pattern : String }
+    = Add { value : Value }
+    | Regex { pattern : String }
     | Constant { value : String }
     | Choice { choices : List Value }
     | ChoiceRef { uri : String }
@@ -41,11 +42,6 @@ type Mask
 type alias Seed =
     { field : String
     }
-
-
-type Value
-    = Int
-    | String
 
 
 
@@ -105,7 +101,7 @@ configDecoder =
 maskDecoder : Decoder Mask
 maskDecoder =
     oneOf
-        [ maskRegexDecoder ]
+        [ maskAddDecoder, maskRegexDecoder ]
 
 
 maskRegexDecoder : Decoder Mask
@@ -116,6 +112,17 @@ maskRegexDecoder =
             Ok { pattern = pattern }
     in
     map Regex (field "regex" string |> andThen (create >> fromResult))
+
+
+maskAddDecoder : Decoder Mask
+maskAddDecoder =
+    let
+        create : Value -> Result String { value : Value }
+        create value =
+            Ok { value = value }
+    in
+    map Add
+        (field "add" value |> andThen (create >> fromResult))
 
 
 decodeConfig : String -> Result Error Config
