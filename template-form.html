@@ -1,6 +1,6 @@
 <!-- form.html -->
 <section class="flex-row space-y-1">
-  <article class="rounded-md border-2 border-solid bg-stone-100 p-1">
+  <article class="m-2 rounded-md border-2 border-solid bg-stone-100 p-1 shadow-md">
     <header class="flex items-center space-x-5">
       <img src="https://placehold.co/40" />
       <input id="jsonpath" value="Jsonpath" placeholder="json.path" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
@@ -14,7 +14,7 @@
     </header>
     <hr class="m-2" />
     <details class="group">
-      <summary class="p-2">Seed</summary>
+      <summary class="p-2 font-medium">Seed</summary>
       <div class="flex items-center space-x-5 p-2">
         <label for="seed" class="">Field</label>
         <input id="seed" placeholder="json.path" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
@@ -22,22 +22,25 @@
     </details>
     <hr class="m-2" />
     <details class="group">
-      <summary class="p-2">Cache</summary>
+      <summary class="p-2 font-medium">Cache</summary>
       <div class="flex items-center space-x-5 p-2">
         <label for="cache" class="">Name</label>
         <input id="cache" placeholder="name" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
       </div>
     </details>
     <hr class="m-2" />
-    <details class="group">
-      <summary class="p-2">Masks</summary>
-      <div class="p-2 grid grid-cols-2">
-        <label for="cache" class="">Name</label>
-        <input id="cache" placeholder="name" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
+    <!-- <details class="group">
+      <summary class="p-2 font-medium">Masks</summary> -->
+    <div class="m-2 ml-6 rounded-md px-5 shadow-lg">
+      <header class="font-medium">Regex</header>
+      <div class="grid grid-cols-4 p-2 align-baseline">
+        <label for="pattern" class="">Pattern</label>
+        <input id="pattern" placeholder="name" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
       </div>
-    </details>
+    </div>
+    <!-- </details> -->
   </article>
-  <article class="rounded-md border-2 border-solid bg-stone-100 p-1">
+  <article class="m-2 rounded-md border-2 border-solid bg-stone-100 p-1 shadow-md">
     <header class="flex items-center space-x-5">
       <img src="https://placehold.co/40" />
       <input id="jsonpath" value="Jsonpath" placeholder="json.path" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
@@ -51,7 +54,7 @@
     </header>
     <hr class="m-2" />
     <details class="group">
-      <summary class="p-2">Seed</summary>
+      <summary class="p-2 font-medium">Seed</summary>
       <div class="flex items-center space-x-5 p-2">
         <label for="seed" class="">Field</label>
         <input id="seed" placeholder="json.path" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
@@ -59,19 +62,22 @@
     </details>
     <hr class="m-2" />
     <details class="group">
-      <summary class="p-2">Cache</summary>
+      <summary class="p-2 font-medium">Cache</summary>
       <div class="flex items-center space-x-5 p-2">
         <label for="cache" class="">Name</label>
         <input id="cache" placeholder="name" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
       </div>
     </details>
     <hr class="m-2" />
-    <details class="group">
-      <summary class="p-2">Masks</summary>
-      <div class="p-2 grid grid-cols-2">
-        <label for="cache" class="">Name</label>
-        <input id="cache" placeholder="name" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
+    <!-- <details class="group">
+      <summary class="p-2 font-medium">Masks</summary> -->
+    <div class="m-2 ml-6 rounded-md px-5 shadow-lg">
+      <header class="font-medium">Regex</header>
+      <div class="grid grid-cols-4 p-2 align-baseline">
+        <label for="pattern" class="">Pattern</label>
+        <input id="pattern" placeholder="name" class="bg-stone-50 p-1 px-2 hover:bg-stone-200 focus:bg-[#dcdcaf]" />
       </div>
-    </details>
+    </div>
+    <!-- </details> -->
   </article>
 </section>
